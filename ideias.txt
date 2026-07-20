@@ -1,0 +1,26 @@
+colocar perks nas caixas (perks que ganharmos, colocamos nas caixas como recompensas e enviamos para os players)
+compra de essencias (futuramente)
+
+
+
+
+arrumar roll da roleta (ela esta com o roll aleatório, uma hr é rapida outra hr é lenta, como se ela travasse)
+
+
+
+
+
+Antes de responder:
+1. Leia o arquivo que enviei INTEIRO, do início ao fim.
+2. Confirme explicitamente que você leu o arquivo completo.
+3. Baseie a resposta EXCLUSIVAMENTE no código existente.
+4. Se algo já existir, apenas aponte onde reutilizar ou ajustar.
+5. Se não tiver certeza de algo, diga claramente que não achou no arquivo.
+6. Só então responda à pergunta.
+
+
+
+Cartas NOVAS:
+1- ENIGMAS CARTINHA NOVA!!!!
+
+2- Carta cassino, ele roleta um cassino classico (tres imagens iguais) se ganhar "forra"

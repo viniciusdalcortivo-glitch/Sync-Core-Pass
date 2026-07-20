@@ -1,0 +1,21 @@
+{
+  "name": "dev-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "electron/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "electron": "^39.2.7"
+  }
+}
