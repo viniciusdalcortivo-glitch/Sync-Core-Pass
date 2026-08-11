@@ -88,7 +88,7 @@ Depois, acesse [http://localhost:3000](http://localhost:3000).
 5. Aguarde o resultado da roleta ou pressione `Esc` para pular a animação.
 
 <p align="center">
-  <video src=".github/assets/roulette-demo.mp4" controls width="600"></video>
+  <video src="[.github/assets/roulette-demo.mp4](https://github.com/user-attachments/assets/04b31160-638d-4e82-a029-c9f6e3e9922c)" controls width="600"></video>
 </p>
 
 6. Abra novamente uma caixa desbloqueada para realizar um reroll.
