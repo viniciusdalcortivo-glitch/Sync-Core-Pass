@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/images/branding/logo-Sync.png" alt="Logo Sync" width="180" />
-</p>
-
 # Sync Core Pass
 
 Aplicativo de progressão gamificada da Sync. O jogador utiliza **Essências Sync** para desbloquear nós de um passe, abrir caixas por raridade e receber recompensas por meio de uma roleta animada.
