@@ -2,11 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
-
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(express.static(path.join(__dirname, "public")));
 
 const DB_PATH = path.join(__dirname, "database", "DataBase.json");
 const REWARDS_PATH = path.join(__dirname, "database", "Rewards.json");
@@ -35,25 +34,25 @@ app.post("/player/:id/save", (req, res) => {
   res.json({ success: true });
 });
 
-app.get('/players', (req, res) => {
+app.get("/players", (req, res) => {
   try {
     const db = readJSON(DB_PATH);
     res.json(Object.keys(db));
   } catch (err) {
-    console.error('Erro ao listar players:', err);
+    console.error("Erro ao listar players:", err);
     res.status(500).json([]);
   }
 });
 
 // remover player
-app.delete('/player/:id', (req, res) => {
+app.delete("/player/:id", (req, res) => {
   const { id } = req.params;
 
   // ler o banco primeiro
   const db = readJSON(DB_PATH);
 
   if (!db[id]) {
-    return res.status(404).json({ error: 'Player não encontrado' });
+    return res.status(404).json({ error: "Player não encontrado" });
   }
 
   delete db[id];
@@ -63,8 +62,6 @@ app.delete('/player/:id', (req, res) => {
   console.log(`Player removido: ${id}`);
   res.json({ success: true });
 });
-
-
 
 /* ===== REWARDS ===== */
 

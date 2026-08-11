@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="images/favicon.ico" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>SYNC CORE PASS</title>
+  </head>
+  <body>
+    <img
+      src="images/branding/Sync-Texto.png"
+      class="texto-sync-top"
+      alt="SYNC"
+    />
+    <img src="images/branding/logo-Sync.png" class="logo-sync-top" alt="SYNC" />
+
+    <div class="star-background">
+      <canvas id="starCanvas"></canvas>
+    </div>
+
+    <div class="wrap">
+      <div class="main-content">
+        <header class="sync-header">
+          <div class="sync-header-inner">
+            <h1 class="sync-title">SYNC CORE PASS</h1>
+            <div class="sync-subtitle">Sistema de Recompensas e Progressão</div>
+          </div>
+        </header>
+
+        <div class="board-shell">
+          <div class="board">
+            <div class="board-inner">
+              <img
+                src="images/branding/Sync-imagem-fundo-scene.png"
+                class="fundo-sync"
+                alt="Fundo SYNC"
+              />
+              <div
+                class="grid"
+                id="grid"
+                title="Segure e arraste no fundo para navegar"
+              >
+                <div class="scene" id="scene">
+                  <canvas id="linkCanvas"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="card node-details">
+          <div style="font-weight: 700">Detalhes da caixa:</div>
+          <div class="card-divider"></div>
+          <div id="nodeDetails" style="margin-top: 8px; color: var(--muted)">
+            Clique em uma caixa.
+          </div>
+          <div style="margin-top: 10px">
+            <button class="btn" id="unlockBtn" style="display: none">
+              Abrir Caixa
+            </button>
+          </div>
+        </div>
+
+        <div class="card player-stats-card">
+          <div style="font-weight: 700">Player Stats</div>
+
+          <div class="card-divider"></div>
+
+          <div class="stats-list">
+            <div class="stat-row">
+              <span class="stat-label">Player</span>
+              <span class="stat-value" id="statPlayer">-</span>
+            </div>
+
+            <div class="stat-row">
+              <span class="stat-label">Essências Sync</span>
+              <span class="stat-value" id="statPoints">0</span>
+            </div>
+
+            <div class="stat-row">
+              <span class="stat-label">Caixas abertas</span>
+              <span class="stat-value" id="statOpened">0</span>
+            </div>
+
+            <div class="card-divider"></div>
+
+            <div class="stat-row">
+              <span class="stat-label">Level</span>
+              <span class="stat-value" id="statUnlocked">0</span>
+            </div>
+
+            <div class="stat-row">
+              <span class="stat-label">Progresso</span>
+              <span class="stat-value" id="statProgress">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card player-card">
+          <div style="font-weight: 700">Player</div>
+          <div class="card-divider"></div>
+          <div class="player-combobox" id="playerCombobox">
+            <button class="btn combobox-trigger" id="playerComboTrigger">
+              <span id="playerComboLabel">Selecionar player...</span>
+              <span class="combo-arrow">▾</span>
+            </button>
+            <div class="card-divider"></div>
+            <div class="combobox-popover" id="playerComboPopover">
+              <input
+                type="text"
+                id="playerComboSearch"
+                placeholder="Buscar player..."
+              />
+
+              <div class="combobox-list" id="playerComboList"></div>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <button
+            class="btn"
+            id="openCreatePlayer"
+            style="margin-top: 8px; width: 100%"
+          >
+            Novo Player
+          </button>
+          <button
+            class="btn"
+            id="openManageProfile"
+            style="margin-top: 8px; width: 100%"
+          >
+            Gerenciar Perfil
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Stage modal (hybrid fullscreen) -->
+    <div
+      class="stage-wrap"
+      id="boxStage"
+      aria-hidden="true"
+      style="display: none"
+    >
+      <div class="stage" id="stage">
+        <div class="reel">
+          <div class="reel-track" id="reel"></div>
+        </div>
+        <div class="mask"></div>
+        <div class="rarity" id="rarityLabel"></div>
+      </div>
+    </div>
+
+    <div class="result-overlay" id="resultOverlay"></div>
+    <div id="resultCard" class="result-card" style="display: none">
+      <img id="resultImg" src="" alt="result" />
+      <div id="resultName" style="font-weight: 700; color: #fff"></div>
+      <div id="resultType" style="color: var(--muted); font-size: 13px"></div>
+      <button id="resultClose" class="close">Fechar</button>
+    </div>
+
+    <!-- CONFIRM GLOBAL (ABRIR CAIXA) -->
+    <div class="confirm-wrap" id="confirmGlobal" style="display: none">
+      <div class="confirm-box">
+        <div id="confirmGlobalText" style="color: #e6eef6"></div>
+
+        <div
+          class="confirm-row"
+          style="display: flex; gap: 8px; margin-top: 12px"
+        >
+          <button class="btn" id="confirmGlobalYes">Confirmar</button>
+          <button class="btn" id="confirmGlobalNo">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="debugOverlay">Debug: inicializando...</div>
+
+    <!-- sounds placeholders -->
+    <audio id="s_open" src="sounds/roleta-final-1.mp3" preload="auto"></audio>
+    <audio id="s_comum" src="sounds/bom-dia-magnata.mp3" preload="auto"></audio>
+    <audio
+      id="s_rara"
+      src="https://assets.codepen.io/3/coin-02.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="s_epica"
+      src="https://assets.codepen.io/3/coin-03.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="s_lendaria"
+      src="https://assets.codepen.io/3/coin-04.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="s_mitica"
+      src="https://assets.codepen.io/3/coin-05.mp3"
+      preload="auto"
+    ></audio>
+
+    <button
+      id="sceneUnlockBtn"
+      class="btn"
+      style="position: absolute; display: none; z-index: 1400"
+    >
+      Abrir Caixa
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+    <script type="module" src="js/main.js"></script>
+
+    <!-- Sheet Criar Player -->
+    <div id="createPlayerSheet" class="sheet-overlay" style="display: none">
+      <div class="sheet">
+        <div class="sheet-header">
+          <h2>Criar novo player</h2>
+          <p>Crie um novo perfil de progresso.</p>
+        </div>
+
+        <div class="sheet-content">
+          <label for="newPlayerId">ID do Player</label>
+          <input id="newPlayerId" placeholder="ex: player4" />
+        </div>
+
+        <div class="sheet-footer">
+          <button class="btn" id="createPlayerBtn">Criar</button>
+          <button class="btn" id="closeSheetBtn">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-overlay" id="manageProfileSheet" style="display: none">
+      <div class="sheet">
+        <!-- conteúdo do sheet -->
+        <div class="sheet-header">
+          <h2>Gerenciar Perfil</h2>
+          <p>Ações avançadas do player selecionado</p>
+        </div>
+
+        <div class="sheet-content">
+          <div>
+            Player atual:
+            <b id="managePlayerName"></b>
+          </div>
+
+          <button class="btn danger" id="resetPlayerBtn">Resetar Player</button>
+          <label style="font-size: 13px; color: #94a3b8">Nome do Player</label>
+
+          <input id="editPlayerNameInput" type="text" disabled />
+
+          <button class="btn" id="editPlayerNameBtn">Editar nome</button>
+
+          <button class="btn" id="savePlayerNameBtn" style="display: none">
+            Salvar nome
+          </button>
+
+          <div class="card-divider"></div>
+
+          <div class="card-divider"></div>
+
+          <div class="card" id="pointsPanel">
+            <div style="font-weight: 700">Essências Sync</div>
+            <div style="margin-top: 6px; color: var(--muted); font-size: 13px">
+              Gerencie manualmente as Essências Sync deste player.
+            </div>
+
+            <input
+              id="pointsInput"
+              type="number"
+              min="0"
+              step="1"
+              value="1"
+              style="margin-top: 10px"
+            />
+
+            <div class="points-actions">
+              <button class="btn" id="addPointsBtn">Adicionar</button>
+              <button class="btn" id="removePointsBtn">Remover</button>
+              <button class="btn" id="setPointsBtn">Definir</button>
+            </div>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <button class="btn danger" id="deletePlayerBtn">
+            Deletar Player
+          </button>
+        </div>
+
+        <div class="sheet-footer">
+          <button class="btn" id="closeManageProfile">Fechar</button>
+        </div>
+
+        <!-- CONFIRM DO SHEET -->
+        <div class="confirm-wrap sheet-confirm" id="confirmSheet">
+          <div class="confirm-box">
+            <div id="confirmSheetText"></div>
+
+            <div
+              class="confirm-row"
+              style="display: flex; gap: 8px; margin-top: 12px"
+            >
+              <button class="btn danger" id="confirmSheetYes">Confirmar</button>
+              <button class="btn" id="confirmSheetNo">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
